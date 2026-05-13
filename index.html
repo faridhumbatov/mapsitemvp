@@ -19,19 +19,18 @@
             transform-box: fill-box;
             transform-origin: center;
             /* transition hər iki vəziyyətdə (həm giriş, həm çıxış) olmalıdır */
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) .1s,
-                fill 0.2s ease,
-                stroke 0.2s ease !important;
-
+            transition: transform 0.2s ease-out, fill 0.2s ease, stroke 0.2s ease !important;
             z-index: 1 !important;
+            pointer-events: visiblePainted;
         }
 
         .active-region {
             fill: rgb(0, 51, 38) !important;
             stroke: #fff !important;
             stroke-width: 1px !important;
-            transform: scale(1.1 ) !important;
+            transform: scale(1.1) !important;
             filter: drop-shadow(-5px 5px 10px rgba(0, 0, 0, 0.75)) !important;
+            pointer-events: auto !important;
         }
 
         #map-tooltip {
@@ -363,9 +362,7 @@
             style="fill: rgb(151, 144, 238); stroke: rgb(255, 255, 255); stroke-width: 1.01312px;"></path>
     </svg>
 
-    <div id="map-tooltip"
-        style="display: none; position: absolute; background: rgba(0,0,0,0.8); color: white; padding: 5px 12px; border-radius: 4px; font-size: 14px; pointer-events: none; z-index: 9999;">
-    </div>
+    <div id="map-tooltip" style="display: none;"></div>
 
     <script src="script.js"></script>
 </body>

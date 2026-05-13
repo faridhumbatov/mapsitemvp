@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const allPaths = document.querySelectorAll('svg path');
     const tooltip = document.getElementById('map-tooltip');
 
-    // Hər şeyi sıfırlayan funksiya
     function clearAll() {
         allPaths.forEach(p => p.classList.remove('active-region'));
         tooltip.style.display = 'none';
@@ -11,30 +10,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     svg.addEventListener('mouseover', function (e) {
         const region = e.target.closest('path');
+        if (!region) return;
 
-        if (region) {
-            // 1. Sürətli keçidlərdə digər rayonları təmizləyirik
-            clearAll();
+        if (region.classList.contains('active-region')) return;
 
-            // 2. Elementi ən üst qata çıxarırıq
-            if (region !== region.parentNode.lastElementChild) {
-                region.parentNode.appendChild(region);
-            }
+        allPaths.forEach(p => p.classList.remove('active-region'));
 
-            // 3. Rayonu aktiv edirik (böyüyür və rəngi dəyişir)
-            region.classList.add('active-region');
+        if (region.parentNode.lastElementChild !== region) {
+            region.parentNode.appendChild(region);
+        }
 
-            // 4. Tooltip-də adı göstəririk
-            const regionName = region.getAttribute('title');
-            if (regionName) {
-                tooltip.innerText = regionName;
-                tooltip.style.display = 'block';
-            }
+        region.classList.add('active-region');
+
+        const regionName = region.getAttribute('title');
+        if (regionName) {
+            tooltip.innerText = regionName;
+            tooltip.style.display = 'block';
         }
     });
 
     svg.addEventListener('mousemove', function (e) {
-        // Tooltip-in siçanı təqib etməsi üçün
         if (tooltip.style.display === 'block') {
             tooltip.style.left = (e.pageX + 15) + 'px';
             tooltip.style.top = (e.pageY + 15) + 'px';
@@ -42,13 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     svg.addEventListener('mouseout', function (e) {
-        const region = e.target.closest('path');
-        if (region) {
-            region.classList.remove('active-region');
-            tooltip.style.display = 'none';
+        const related = e.relatedTarget;
+        if (!related || !e.target.contains(related)) {
+            const region = e.target.closest('path');
+            if (region) {}
         }
     });
 
-    // Maus xəritənin sərhədindən çıxanda hər şeyi sıfırla
     svg.addEventListener('mouseleave', clearAll);
 });
